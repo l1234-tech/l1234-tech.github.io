@@ -1,80 +1,46 @@
 ---
 title: Обо мне
+description: Информация о Сырчине Андрее — авторе учебного портала
+hide:
+  - navigation
 ---
 
-# 👤 Обо мне
+# :bust_in_silhouette: Обо мне
 
-<div class="grid cards" markdown>
+![Аватар](https://api.dicebear.com/7.x/avataaars/svg?seed=Andrey&backgroundColor=deep-purple&radius=50){ align=right width=200 }
 
-:material-account-circle:{ .lg .middle } **Сырчин Андрей**
----
-Студент университета ИМТО | 
-Факультет "Программная инженерия и компьютерные технологии" |
-Группа Р3122
+## Сырчин Андрей
 
-:material-map-marker:{ .lg .middle } **Локация**
----
-Санкт-Петербург, Россия
+> :material-school: Студент | :material-code-braces: Разработчик 
 
-:material-email:{ .lg .middle } **Связь**
----
-andrey.syrchin@example.com
-
-:material-github:{ .lg .middle } **GitHub**
----
-github.com/l1234-tech
-
-</div>
+Привет! 👋 Я — Андрей, создаю этот портал как часть учебного процесса. Здесь я документирую свой прогресс, делюсь знаниями и структурирую полученный опыт.
 
 ---
 
 ## 🎓 Образование
 
-| Период | Учебное заведение | Специальность |
-| :--- | :--- | :--- |
-| 2025 — 2029 | НИУ ИТМО | Программная инженерия и компьютерные технологии |
-
----
+| Период | Учреждение | Направление | Группа |
+|--------|-----------|-------------|-------|
+| 2024 — н.в. | НИУ ИТМО | Программная инженерия и компьютерные технологии | P3122 |
 
 ## 💻 Технические навыки
 
-<div class="grid cards" markdown>
+<div class="grid" markdown>
 
-:material-language-python: **Python**
----
-Уверенное владение, опыт 2+ года
+:material-language-python: **Python**  
+`pandas` `numpy` `matplotlib` `pytest`
 
-:material-language-html5: **HTML/CSS**
----
-Верстка сайтов, адаптивный дизайн
+:material-web: **Web**  
+`HTML5` `MkDocs`
 
-:material-git: **Git**
----
-Контроль версий, работа с GitHub
+:material-database: **Data & Tools**  
+`SQL` `Git`
 
-:material-database: **Базы данных**
----
-SQL, PostgreSQL, MySQL
 
 </div>
-
----
-
-
 
 ## 📬 Контакты
 
-Готов к сотрудничеству и интересным проектам!
-
-<div class="grid cards" markdown>
-
-**Telegram**
----
-[@andrey_syrchin](https://t.me/@dark_kurom1)
-
-:material-email: **Email**
----
-[syrchin.andrej@inbox.ru](mailto:syrchin.andrej@inbox.ru)
-
-
-</div>
+:fontawesome-brands-github: **GitHub**: [@l1234-tech](https://github.com/l1234-tech)  
+:fontawesome-brands-telegram: **Telegram**: [@dark_kurom1](https://t.me/@dark_kurom1)  
+:material-email: **Email**: [syrchin.andrej@inbox.ru](mailto:syrchin.andrej@inbox.ru)
