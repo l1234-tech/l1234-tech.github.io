@@ -1,0 +1,63 @@
+site_name: Портфолио Сырчина Андрея
+site_author: Сырчин Андрей
+site_description: Учебный портал и отчеты по лабораторным работам
+
+site_dir: ../docs
+
+theme:
+  name: material
+  language: ru
+  logo: material/school
+  palette:
+    - scheme: default
+      primary: deep purple
+      accent: pink
+      toggle:
+        icon: material/weather-sunny
+        name: Переключить на тёмную тему
+    - scheme: slate
+      primary: deep purple
+      accent: pink
+      toggle:
+        icon: material/weather-night
+        name: Переключить на светлую тему
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.expand
+    - search.highlight
+    - content.code.copy
+
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - admonition
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.superfences
+  - tables
+  - toc:
+      permalink: true
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/l1234-tech
+    - icon: fontawesome/brands/telegram
+      link: https://t.me/@dark_kurom1
+    - icon: material/email
+      link: mailto:syrchin.andrej@inbox.ru
+
+copyright: © 2026 Сырчин Андрей
+
+nav:
+  - Главная: index.md
+  - Лабораторные работы:
+    - Главная: labs/index.md
+    - Лаба 1: labs/lab1.md
+    - Лаба 2: labs/lab2.md
+    - Лаба 3: labs/lab3.md
+  - Обо мне: about.md
+  - Материалы: materials.md
