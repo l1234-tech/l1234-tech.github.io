@@ -15,7 +15,7 @@ hide:
 
 -   :one: **[Лабораторная работа №1](lab1.md)**  
     *Тема работы*  
-    :material-clock: В процессе · :material-calendar: 14.03.2026
+    :material-check-circle: Выполнена! · :material-calendar: 14.03.2026
 
 -   :two: **[Лабораторная работа №2](lab2.md)**  
     *Тема работы*  
