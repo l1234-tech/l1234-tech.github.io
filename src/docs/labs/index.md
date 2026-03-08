@@ -14,12 +14,12 @@ hide:
 <div class="grid cards" markdown>
 
 -   :one: **[Лабораторная работа №1](lab1.md)**  
-    *Тема работы*  
+    *Тема работы*: Создание и развертывание статического сайта на базе MkDocs с публикацией на GitHub Pages  
     :material-check-circle: Выполнена! · :material-calendar: 14.03.2026
 
 -   :two: **[Лабораторная работа №2](lab2.md)**  
-    *Тема работы*  
-    :material-clock: В процессе · :material-calendar: 0?.0?.2026
+    *Тема работы*: Основы NumPy: массивы и векторные операции  
+    :material-check-circle: Выполнена! · :material-calendar: 14.03.2026
 
 -   :three: **[Лабораторная работа №3](lab3.md)**  
     *Тема работы*  
