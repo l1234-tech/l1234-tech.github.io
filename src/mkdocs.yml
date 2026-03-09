@@ -2,7 +2,7 @@ site_name: Портфолио Сырчина Андрея
 site_author: Сырчин Андрей
 site_description: Учебный портал и отчеты по лабораторным работам
 
-docs_dir: ../docs
+site_dir: ../docs
 
 theme:
   name: material
