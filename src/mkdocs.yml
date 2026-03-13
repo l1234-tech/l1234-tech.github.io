@@ -59,4 +59,5 @@ nav:
     - Лаба 2: labs/lab2.md
     - Лаба 3: labs/lab3.md
   - Обо мне: about.md
-  - Материалы: materials.md
+  - Материалы:
+    - Главная: materials/index.md
