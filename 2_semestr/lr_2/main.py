@@ -3,12 +3,13 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from typing import Union, Dict
 
 # ============================================================
 # 1. СОЗДАНИЕ И ОБРАБОТКА МАССИВОВ
 # ============================================================
 
-def create_vector():
+def create_vector() -> np.ndarray:
     """
     Создать одномерный массив целых чисел от 0 до 9 включительно.
 
@@ -26,7 +27,7 @@ def create_vector():
 
     return np.arange(10)
 
-def create_matrix():
+def create_matrix() -> np.ndarray:
     """
     Создать матрицу 5×5 со случайными числами из равномерного распределения [0, 1).
 
@@ -35,7 +36,7 @@ def create_matrix():
     """
     return np.random.rand(5,5)
 
-def reshape_vector(vec):
+def reshape_vector(vec: np.ndarray) -> np.ndarray:
     """
      Изменить форму одномерного массива из (10,) в двумерный (2, 5).
 
@@ -58,7 +59,7 @@ def reshape_vector(vec):
     """
     return vec.reshape(2,5)
 
-def transpose_matrix(mat):
+def transpose_matrix(mat: np.ndarray) -> np.ndarray:
     """
     Выполнить транспонирование матрицы (замена строк на столбцы).
 
@@ -81,7 +82,7 @@ def transpose_matrix(mat):
 # 2. ВЕКТОРНЫЕ ОПЕРАЦИИ
 # ============================================================
 
-def vector_add(a, b):
+def vector_add(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """
     Выполнить поэлементное сложение двух векторов одинаковой длины.
 
@@ -104,7 +105,7 @@ def vector_add(a, b):
     """
     return a + b
 
-def scalar_multiply(vec, scalar):
+def scalar_multiply(vec: np.ndarray, scalar: Union[float, int]) -> np.ndarray:
     """
     Умножить вектор на скалярное значение.
 
@@ -123,7 +124,7 @@ def scalar_multiply(vec, scalar):
 
     return vec * scalar
 
-def elementwise_multiply(a, b):
+def elementwise_multiply(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """
     Выполнить поэлементное умножение двух массивов.
 
@@ -136,7 +137,7 @@ def elementwise_multiply(a, b):
     """
     return a * b
 
-def dot_product(a, b):
+def dot_product(a: np.ndarray, b: np.ndarray) -> float:
     """
     Вычислить скалярное произведение двух векторов.
 
@@ -158,7 +159,7 @@ def dot_product(a, b):
 # 3. МАТРИЧНЫЕ ОПЕРАЦИИ
 # ============================================================
 
-def matrix_multiply(a, b):
+def matrix_multiply(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """
     Выполнить матричное умножение двух массивов.
 
@@ -184,7 +185,7 @@ def matrix_multiply(a, b):
     """
     return a @ b
 
-def matrix_determinant(a):
+def matrix_determinant(a: np.ndarray) -> float:
     """
     Вычислить определитель (детерминант) квадратной матрицы (вычисляется только для квадратной матрицы).
 
@@ -207,7 +208,7 @@ def matrix_determinant(a):
     """
     return np.linalg.det(a)
 
-def matrix_inverse(a):
+def matrix_inverse(a: np.ndarray) -> np.ndarray:
     """
     Вычислить обратную матрицу для квадратной матрицы.
 
@@ -224,7 +225,7 @@ def matrix_inverse(a):
     """
     return np.linalg.inv(a)
 
-def solve_linear_system(a, b):
+def solve_linear_system(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """
     Решить систему линейных уравнений Ax = b методом наименьших квадратов.
 
@@ -254,7 +255,7 @@ def solve_linear_system(a, b):
 # 4. СТАТИСТИЧЕСКИЙ АНАЛИЗ
 # ============================================================
 
-def load_dataset(path="data/students_scores.csv"):
+def load_dataset(path: str = "data/students_scores.csv") -> np.ndarray:
     """
     Загрузить данные из CSV-файла и преобразовать в NumPy-массив.
 
@@ -279,7 +280,7 @@ def load_dataset(path="data/students_scores.csv"):
     """
     return pd.read_csv(path).to_numpy()
 
-def statistical_analysis(data):
+def statistical_analysis(data: np.ndarray) -> Dict[str, float]:
     """
     Выполнить базовый статистический анализ одномерного массива данных.
 
@@ -353,7 +354,7 @@ def normalize_data(data: np.ndarray) -> np.ndarray:
 # 5. ВИЗУАЛИЗАЦИЯ
 # ============================================================
 
-def plot_histogram(data):
+def plot_histogram(data: np.ndarray, bins: int = 10, output_path: str = "plots/histogram.png") -> None:
     """
     Построить и сохранить гистограмму распределения данных.
 
@@ -376,7 +377,7 @@ def plot_histogram(data):
     plt.ylabel('Количество студентов')
     plt.savefig('plots/histogram.png', dpi=300, bbox_inches='tight')
 
-def plot_heatmap(matrix):
+def plot_heatmap(matrix: np.ndarray, output_path: str = "plots/heatmap.png") -> None:
     """
     Построить и сохранить тепловую карту (heatmap) матрицы данных.
 
@@ -414,7 +415,7 @@ def plot_heatmap(matrix):
     
     plt.savefig('plots/heatmap.png', dpi=300, bbox_inches='tight')
 
-def plot_line(x, y):
+def plot_line(x: np.ndarray, y: np.ndarray, output_path: str = "plots/line_plot.png") -> None:
     """
     Построить и сохранить линейный график зависимости y от x.
 
