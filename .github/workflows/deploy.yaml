@@ -3,21 +3,30 @@ name: Deploy MkDocs Site
 on:
   push:
     branches:
-      - main  # Запускать при пуше в ветку main
+      - main
   pull_request:
     branches:
-      - main  # Запускать тесты при PR (но не публиковать)
+      - main
+
+# Даем необходимые permissions
+permissions:
+  contents: write
+  pages: write
+  id-token: write
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     
     steps:
       # 1. Скачиваем код репозитория
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Настраиваем Python (версию можно поменять на 3.10, 3.11 и т.д.)
+      # 2. Настраиваем Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -38,10 +47,9 @@ jobs:
           fi
           echo "mkdocs.yml found successfully"
 
-      # 5. Собираем сайт (исправленная команда)
+      # 5. Собираем сайт
       - name: Build MkDocs site
         run: |
-          # Переходим в папку src и собираем оттуда
           cd ./src
           mkdocs build --clean -d ../docs
 
@@ -50,19 +58,20 @@ jobs:
         run: |
           echo "Checking built site structure:"
           ls -la ./docs/
-          echo "Checking if index.html exists:"
           if [ -f "./docs/index.html" ]; then
-            echo "✅ Site built successfully!"
+            echo "Site built successfully!"
           else
-            echo "❌ Error: index.html not found!"
+            echo "Error: index.html not found!"
             exit 1
           fi
 
-      # 7. Публикуем на GitHub Pages
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        if: github.ref == 'refs/heads/main' # Публиковать только если это ветка main (не PR)
+      # 7. Загружаем артефакт для GitHub Pages
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs  # Папка, куда собрался сайт
-          force_orphan: true   # Делает историю ветки gh-pages чистой (как git push -f)
+          path: ./docs
+
+      # 8. Деплоим на GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
