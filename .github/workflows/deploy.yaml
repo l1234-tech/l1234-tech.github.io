@@ -13,6 +13,13 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      - name: Check mkdocs.yml exists
+        run: |
+          if [ ! -f "./src/mkdocs.yml" ]; then
+            echo "Error: mkdocs.yml not found in ./src/"
+            exit 1
+          fi
+          echo "mkdocs.yml found successfully"
       # 1. Скачиваем код репозитория
       - name: Checkout code
         uses: actions/checkout@v4
@@ -33,9 +40,8 @@ jobs:
       # Важно: убедитесь, что в mkdocs.yml правильно указан путь к документам, если они в src
       - name: Build MkDocs site
         run: |
-          # Если ваши .md файлы лежат в папке src, проверьте настройку docs_dir в mkdocs.yml
-          # Команда ниже просто запускает сборку в папку docs (как указано в mkdocs.yml по умолчанию)
-          mkdocs build --clean
+          cd ./src
+          mkdocs build --clean -d ../docs
 
       # 5. Публикуем на GitHub Pages (аналог вашего шага publish-to-release-branch)
       # Это действие само создает ветку gh-pages и пушит туда файлы
@@ -46,3 +52,15 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs  # Папка, куда собрался сайт
           force_orphan: true   # Делает историю ветки gh-pages чистой (как git push -f)
+
+      - name: Verify built site
+        run: |
+          echo "Checking built site structure:"
+          ls -la ./docs/
+          echo "Checking if index.html exists:"
+          if [ -f "./docs/index.html" ]; then
+            echo "Site built successfully!"
+          else
+            echo "Error: index.html not found!"
+            exit 1
+          fi
