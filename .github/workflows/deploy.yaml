@@ -13,13 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Check mkdocs.yml exists
-        run: |
-          if [ ! -f "./src/mkdocs.yml" ]; then
-            echo "Error: mkdocs.yml not found in ./src/"
-            exit 1
-          fi
-          echo "mkdocs.yml found successfully"
       # 1. Скачиваем код репозитория
       - name: Checkout code
         uses: actions/checkout@v4
@@ -28,7 +21,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11' 
+          python-version: '3.11'
 
       # 3. Устанавливаем зависимости
       - name: Install requirements
@@ -36,15 +29,39 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      # 4. Собираем сайт (аналог вашего шага build-mkdocs-docs)
-      # Важно: убедитесь, что в mkdocs.yml правильно указан путь к документам, если они в src
+      # 4. Проверяем наличие mkdocs.yml
+      - name: Check mkdocs.yml exists
+        run: |
+          if [ ! -f "./src/mkdocs.yml" ]; then
+            echo "Error: mkdocs.yml not found in ./src/"
+            exit 1
+          fi
+          echo "mkdocs.yml found successfully"
+
+      # 5. Собираем сайт (исправленная команда)
       - name: Build MkDocs site
         run: |
+          # Вариант 1: Переходим в папку src и собираем оттуда
           cd ./src
           mkdocs build --clean -d ../docs
+          
+          # Или вариант 2 (альтернативный):
+          # mkdocs build --clean -f ./src/mkdocs.yml -d ./docs
 
-      # 5. Публикуем на GitHub Pages (аналог вашего шага publish-to-release-branch)
-      # Это действие само создает ветку gh-pages и пушит туда файлы
+      # 6. Проверяем результат сборки
+      - name: Verify built site
+        run: |
+          echo "Checking built site structure:"
+          ls -la ./docs/
+          echo "Checking if index.html exists:"
+          if [ -f "./docs/index.html" ]; then
+            echo "✅ Site built successfully!"
+          else
+            echo "❌ Error: index.html not found!"
+            exit 1
+          fi
+
+      # 7. Публикуем на GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         if: github.ref == 'refs/heads/main' # Публиковать только если это ветка main (не PR)
@@ -52,15 +69,3 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs  # Папка, куда собрался сайт
           force_orphan: true   # Делает историю ветки gh-pages чистой (как git push -f)
-
-      - name: Verify built site
-        run: |
-          echo "Checking built site structure:"
-          ls -la ./docs/
-          echo "Checking if index.html exists:"
-          if [ -f "./docs/index.html" ]; then
-            echo "Site built successfully!"
-          else
-            echo "Error: index.html not found!"
-            exit 1
-          fi
