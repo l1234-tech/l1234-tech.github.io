@@ -1,3 +1,3 @@
-docs:
-  root: docs
-  ref: release
+site:
+  root: "docs"
+  ref: "release"

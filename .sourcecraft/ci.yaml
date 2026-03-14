@@ -1,6 +1,6 @@
 on:
   push:
-    workflows: build-docs
+    workflows: build-site
     filter:
       branches: main
 
