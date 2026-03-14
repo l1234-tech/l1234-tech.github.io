@@ -41,12 +41,9 @@ jobs:
       # 5. Собираем сайт (исправленная команда)
       - name: Build MkDocs site
         run: |
-          # Вариант 1: Переходим в папку src и собираем оттуда
+          # Переходим в папку src и собираем оттуда
           cd ./src
           mkdocs build --clean -d ../docs
-          
-          # Или вариант 2 (альтернативный):
-          # mkdocs build --clean -f ./src/mkdocs.yml -d ./docs
 
       # 6. Проверяем результат сборки
       - name: Verify built site
