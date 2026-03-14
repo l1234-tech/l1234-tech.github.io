@@ -1,6 +1,5 @@
 numpy
 pandas
 matplotlib
-seaborn
 mkdocs
 mkdocs-material
