@@ -23,7 +23,7 @@ hide:
 
 -   :three: **[Лабораторная работа №3](lab3.md)**  
     *Тема работы*  
-    :material-clock: В процессе · :material-calendar: 0?.0?.2026
+    :material-check-circle: Выполнена! · :material-calendar: 28.03.2026
 
 </div>
 
