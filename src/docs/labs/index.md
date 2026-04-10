@@ -22,8 +22,16 @@ hide:
     :material-check-circle: Выполнена! · :material-calendar: 14.03.2026
 
 -   :three: **[Лабораторная работа №3](lab3.md)**  
-    *Тема работы*  
+    *Тема работы*: CI/CD для статического сайта в SourceCraft
     :material-check-circle: Выполнена! · :material-calendar: 28.03.2026
+
+-   :four: **[Лабораторная работа №4](https://colab.research.google.com/drive/1tH6Aj16dN9WiPJxDNka8jA3-iMLYWMei?usp=sharing)**  
+    *Тема работы*: Классификация с применением Scikit-Learn
+    :material-check-circle: Выполнена! · :material-calendar: 11.04.2026
+
+-   :five: **[Лабораторная работа №5](https://colab.research.google.com/drive/1VXGTCVjtjEo533UtahO8Ne6SdrvbB5hr?usp=sharing)**  
+    *Тема работы*: Регрессия с применением Scikit-Learn
+    :material-check-circle: Выполнена! · :material-calendar: 11.04.2026
 
 </div>
 
