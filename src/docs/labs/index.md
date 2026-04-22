@@ -33,6 +33,10 @@ hide:
     *Тема работы*: Регрессия с применением Scikit-Learn
     :material-check-circle: Выполнена! · :material-calendar: 11.04.2026
 
+-   :six: **[Лабораторная работа №6](https://colab.research.google.com/drive/1mW6OBSZAvKWXkEvccM7tVXJ1_iLRiuGM?usp=sharing)**  
+    *Тема работы*: Очистка и трансформация данных. pandas
+    :material-check-circle: Выполнена! · :material-calendar: 25.04.2026
+
 </div>
 
 ## 🔍 Как пользоваться отчётами

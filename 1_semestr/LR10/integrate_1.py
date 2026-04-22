@@ -22,4 +22,4 @@ def integrate(f, a, b, *, n_iter=1000):
   for i in range(n_iter):
     acc += f(a + i*step) * step
   return acc
-print(integrate(math.sin , 0, math.pi / 2))
+print(0,5 * integrate(math.sin , 0, math.pi / 2))
