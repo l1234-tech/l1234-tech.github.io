@@ -37,6 +37,9 @@ hide:
     *Тема работы*: Очистка и трансформация данных. pandas
     :material-check-circle: Выполнена! · :material-calendar: 25.04.2026
 
+-   :seven: **[Лабораторная работа №7](https://colab.research.google.com/drive/1hXo3y2Rl8LhX7T6Pl1Det4O8tnvXUvYN?usp=sharing)**  
+    *Тема работы*: Анализ текста
+    :material-check-circle: Выполнена! · :material-calendar: 06.05.2026
 </div>
 
 ## 🔍 Как пользоваться отчётами
