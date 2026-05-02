@@ -40,6 +40,10 @@ hide:
 -   :seven: **[Лабораторная работа №7](https://colab.research.google.com/drive/1hXo3y2Rl8LhX7T6Pl1Det4O8tnvXUvYN?usp=sharing)**  
     *Тема работы*: Анализ текста
     :material-check-circle: Выполнена! · :material-calendar: 06.05.2026
+
+-   :eight: **[Лабораторная работа №8](https://colab.research.google.com/drive/1Xvfv46MszGeBwIGkxwh7QqP2ylcesKdX?usp=sharing)**  
+    *Тема работы*: Анализ текста
+    :material-check-circle: Выполнена! · :material-calendar: 09.05.2026
 </div>
 
 ## 🔍 Как пользоваться отчётами
