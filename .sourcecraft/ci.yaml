@@ -33,52 +33,52 @@ workflows:
                   
                   # Create Python script file with proper indentation
                   cat > /tmp/process_notebook.py << 'EOF'
-import nbformat as nbf
-import os
-import socket
-from datetime import datetime
+                  import nbformat as nbf
+                  import os
+                  import socket
+                  from datetime import datetime
 
-# Load the notebook
-with open('2_semestr/lr_9/лаба_9.ipynb', 'r') as f:
-    nb = nbf.read(f, as_version=4)
+                  # Load the notebook
+                  with open('2_semestr/lr_9/лаба_9.ipynb', 'r') as f:
+                      nb = nbf.read(f, as_version=4)
 
-# Get CI environment information
-run_id = os.environ.get('SOURCECRAFT_RUN_ID', 'N/A')
-commit_sha = os.environ.get('SOURCECRAFT_COMMIT_SHA', 'N/A')
-commit_sha_short = commit_sha[:8] if commit_sha != 'N/A' else 'N/A'
-hostname = socket.gethostname()
-timestamp = datetime.utcnow().isoformat()
+                  # Get CI environment information
+                  run_id = os.environ.get('SOURCECRAFT_RUN_ID', 'N/A')
+                  commit_sha = os.environ.get('SOURCECRAFT_COMMIT_SHA', 'N/A')
+                  commit_sha_short = commit_sha[:8] if commit_sha != 'N/A' else 'N/A'
+                  hostname = socket.gethostname()
+                  timestamp = datetime.utcnow().isoformat()
 
-# Create detailed marker text
-marker_text = f'''# Выполнено в SourceCraft CI/CD
+                  # Create detailed marker text
+                  marker_text = f'''# Выполнено в SourceCraft CI/CD
 
-## Информация о выполнении:
-- **Платформа:** SourceCraft CI/CD Runner
-- **Идентификатор запуска:** {run_id}
-- **Коммит:** {commit_sha_short}
-- **Хост раннера:** {hostname}
-- **Время выполнения:** {timestamp} UTC
+                  ## Информация о выполнении:
+                  - **Платформа:** SourceCraft CI/CD Runner
+                  - **Идентификатор запуска:** {run_id}
+                  - **Коммит:** {commit_sha_short}
+                  - **Хост раннера:** {hostname}
+                  - **Время выполнения:** {timestamp} UTC
 
 
-## Технические детали:
-- Использован Docker образ: python:3.11-alpine
-- Процессор: CI/CD Runner Environment
-- Память: Выделенная CI/CD инфраструктура
-- Сеть: SourceCraft Internal Network
+                  ## Технические детали:
+                  - Использован Docker образ: python:3.11-alpine
+                  - Процессор: CI/CD Runner Environment
+                  - Память: Выделенная CI/CD инфраструктура
+                  - Сеть: SourceCraft Internal Network
 
-*Этот маркер был автоматически доба��лен системой непрерывной интеграции SourceCraft.*
-'''
+                  *Этот маркер был автоматически добавлен системой непрерывной интеграции SourceCraft.*
+                  '''
 
-# Add as a new markdown cell at the beginning
-new_cell = nbf.v4.new_markdown_cell(marker_text)
-nb.cells.insert(0, new_cell)
+                  # Add as a new markdown cell at the beginning
+                  new_cell = nbf.v4.new_markdown_cell(marker_text)
+                  nb.cells.insert(0, new_cell)
 
-# Save the notebook
-with open('2_semestr/lr_9/лаба_9.ipynb', 'w') as f:
-    nbf.write(nb, f)
+                  # Save the notebook
+                  with open('2_semestr/lr_9/лаба_9.ipynb', 'w') as f:
+                      nbf.write(nb, f)
 
-print('Notebook успешно обработан и помечен маркером выполнения SourceCraft CI/CD')
-EOF
+                  print('Notebook успешно обработан и помечен маркером выполнения SourceCraft CI/CD')
+                  EOF
                   
                   # Execute the Python script
                   python /tmp/process_notebook.py
@@ -104,14 +104,14 @@ EOF
                   
                   echo "Creating artifact info file..."
                   cat > artifacts/notebook/artifact_info.txt << EOF
-Artifact: Processed Notebook
-Source: 2_semestr/lr_9/лаба_9.ipynb
-Destination: artifacts/notebook/лаба_9_processed.ipynb
-Generated: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
-Workflow: notebook-processing-workflow
-Run ID: ${SOURCECRAFT_RUN_ID:-N/A}
-Commit SHA: ${SOURCECRAFT_COMMIT_SHA:-N/A}
-EOF
+                  Artifact: Processed Notebook
+                  Source: 2_semestr/lr_9/лаба_9.ipynb
+                  Destination: artifacts/notebook/лаба_9_processed.ipynb
+                  Generated: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+                  Workflow: notebook-processing-workflow
+                  Run ID: ${SOURCECRAFT_RUN_ID:-N/A}
+                  Commit SHA: ${SOURCECRAFT_COMMIT_SHA:-N/A}
+                  EOF
                   
                   echo "Artifact contents:"
                   ls -la artifacts/notebook/
@@ -180,46 +180,46 @@ EOF
                   
                   echo "Creating artifact info file..."
                   cat > artifacts/site/artifact_info.txt << EOF
-Artifact: Static Site Build
-Source: site-build/
-Destination: artifacts/site/
-Generated: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
-Workflow: site-build-workflow
-Run ID: ${SOURCECRAFT_RUN_ID:-N/A}
-Commit SHA: ${SOURCECRAFT_COMMIT_SHA:-N/A}
-Site Name: Портфолио Сырчина Андрея
-Build Tool: MkDocs Material
-EOF
+                  Artifact: Static Site Build
+                  Source: site-build/
+                  Destination: artifacts/site/
+                  Generated: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+                  Workflow: site-build-workflow
+                  Run ID: ${SOURCECRAFT_RUN_ID:-N/A}
+                  Commit SHA: ${SOURCECRAFT_COMMIT_SHA:-N/A}
+                  Site Name: Портфолио Сырчина Андрея
+                  Build Tool: MkDocs Material
+                  EOF
                   
                   echo "Creating site preview..."
                   cat > artifacts/site/index_preview.html << 'EOF'
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Site Build Preview</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        .info { background: #f5f5f5; padding: 20px; border-radius: 5px; }
-        .files { margin-top: 20px; }
-        .file { padding: 5px; border-bottom: 1px solid #ddd; }
-    </style>
-</head>
-<body>
-    <h1>Static Site Build Artifact</h1>
-    <div class="info">
-        <h2>Build Information</h2>
-        <p><strong>Workflow:</strong> site-build-workflow</p>
-        <p><strong>Generated:</strong> $(date -u +"%Y-%m-%d %H:%M:%S UTC")</p>
-        <p><strong>Run ID:</strong> ${SOURCECRAFT_RUN_ID:-N/A}</p>
-        <p><strong>Commit:</strong> ${SOURCECRAFT_COMMIT_SHA:-N/A}</p>
-    </div>
-    <div class="files">
-        <h2>Built Files (first 20):</h2>
-        $(find site-build -type f | head -20 | sed 's|^|<div class="file">• &</div>|')
-    </div>
-</body>
-</html>
-EOF
+                  <!DOCTYPE html>
+                  <html>
+                  <head>
+                      <title>Site Build Preview</title>
+                      <style>
+                          body { font-family: Arial, sans-serif; margin: 40px; }
+                          .info { background: #f5f5f5; padding: 20px; border-radius: 5px; }
+                          .files { margin-top: 20px; }
+                          .file { padding: 5px; border-bottom: 1px solid #ddd; }
+                      </style>
+                  </head>
+                  <body>
+                      <h1>Static Site Build Artifact</h1>
+                      <div class="info">
+                          <h2>Build Information</h2>
+                          <p><strong>Workflow:</strong> site-build-workflow</p>
+                          <p><strong>Generated:</strong> $(date -u +"%Y-%m-%d %H:%M:%S UTC")</p>
+                          <p><strong>Run ID:</strong> ${SOURCECRAFT_RUN_ID:-N/A}</p>
+                          <p><strong>Commit:</strong> ${SOURCECRAFT_COMMIT_SHA:-N/A}</p>
+                      </div>
+                      <div class="files">
+                          <h2>Built Files (first 20):</h2>
+                          $(find site-build -type f | head -20 | sed 's|^|<div class="file">• &</div>|')
+                      </div>
+                  </body>
+                  </html>
+                  EOF
                   
                   echo "Artifact contents:"
                   ls -la artifacts/site/
