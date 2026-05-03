@@ -9,40 +9,53 @@ workflows:
     tasks:
       - name: execute-notebook-task
         cubes:
-          - name: setup-python-dependencies
-            image: python:3.11-alpine
-            script:
-              - pip install nbformat pandas matplotlib
-
-          - name: execute-notebook
+          - name: execute-notebook-with-deps
             image: python:3.11-alpine
             script:
               - |
-                python -c "
-                import nbformat as nbf
-                import os
-                from datetime import datetime
+                echo "Installing Python dependencies..."
+                pip install nbformat pandas matplotlib
+                echo "Dependencies installed successfully"
+                
+                echo "Checking if notebook file exists..."
+                if [ -f "2_semestr/lr_9/data/лаба_9.ipynb" ]; then
+                  echo "Notebook found at: 2_semestr/lr_9/data/лаба_9.ipynb"
+                  
+                  python -c "
+                  import nbformat as nbf
+                  import os
+                  from datetime import datetime
 
-                # Load the notebook
-                with open('2_semestr/lr_9/data/лаба_9.ipynb', 'r') as f:
-                    nb = nbf.read(f, as_version=4)
+                  # Load the notebook
+                  with open('2_semestr/lr_9/data/лаба_9.ipynb', 'r') as f:
+                      nb = nbf.read(f, as_version=4)
 
-                # Create marker text with CI identifiers
-                marker_text = f'''# Executed in SourceCraft CI
-                - Run ID: ${{ env.SOURCECRAFT_RUN_ID }}
-                - Commit SHA: ${{ env.SOURCECRAFT_COMMIT_SHA }}
-                - Timestamp: {datetime.utcnow().isoformat()} UTC
-                - Not executed locally or in Google Colab.'''
+                  # Create marker text with CI identifiers
+                  marker_text = f'''# Executed in SourceCraft CI
+                  - Run ID: {os.environ.get('SOURCECRAFT_RUN_ID', 'N/A')}
+                  - Commit SHA: {os.environ.get('SOURCECRAFT_COMMIT_SHA', 'N/A')}
+                  - Timestamp: {datetime.utcnow().isoformat()} UTC
+                  - Not executed locally or in Google Colab.'''
 
-                # Add as a new markdown cell at the end
-                new_cell = nbf.v4.new_markdown_cell(marker_text)
-                nb.cells.append(new_cell)
+                  # Add as a new markdown cell at the end
+                  new_cell = nbf.v4.new_markdown_cell(marker_text)
+                  nb.cells.append(new_cell)
 
-                # Save the notebook
-                with open('2_semestr/lr_9/data/лаба_9.ipynb', 'w') as f:
-                    nbf.write(nb, f)
-                "
-                echo "Notebook executed successfully"
+                  # Save the notebook
+                  with open('2_semestr/lr_9/data/лаба_9.ipynb', 'w') as f:
+                      nbf.write(nb, f)
+                  
+                  print('Notebook executed and marked successfully')
+                  "
+                else
+                  echo "ERROR: Notebook file not found at: 2_semestr/lr_9/data/лаба_9.ipynb"
+                  echo "Current directory: $(pwd)"
+                  echo "Directory contents:"
+                  ls -la
+                  echo "Looking for notebook..."
+                  find . -name "*.ipynb" -type f 2>/dev/null || echo "No .ipynb files found"
+                  exit 1
+                fi
 
       - name: build-docs-task
         needs: [execute-notebook-task]
@@ -51,9 +64,23 @@ workflows:
             image: python:3.11-alpine
             script:
               - |
+                echo "Installing MkDocs..."
                 pip install mkdocs
-                if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-                cd ./src
-                mkdocs build -d ../docs
-                echo "Сайт собран в папке ./docs"
-                ls -la ../docs
+                if [ -f requirements.txt ]; then 
+                  echo "Installing requirements from requirements.txt..."
+                  pip install -r requirements.txt
+                fi
+                
+                echo "Building MkDocs site..."
+                if [ -d "./src" ]; then
+                  cd ./src
+                  mkdocs build -d ../docs
+                  echo "Сайт собран в папке ./docs"
+                  ls -la ../docs
+                else
+                  echo "ERROR: src directory not found!"
+                  echo "Current directory: $(pwd)"
+                  echo "Directory contents:"
+                  ls -la
+                  exit 1
+                fi
