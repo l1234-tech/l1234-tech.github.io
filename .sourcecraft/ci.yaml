@@ -31,7 +31,7 @@ workflows:
                 if [ -f "2_semestr/lr_9/лаба_9.ipynb" ]; then
                   echo "Notebook found at: 2_semestr/lr_9/лаба_9.ipynb"
                   
-                  # Create Python script file to avoid indentation issues
+                  # Create Python script file with proper indentation
                   cat > /tmp/process_notebook.py << 'EOF'
 import nbformat as nbf
 import os
@@ -66,18 +66,22 @@ marker_text = f'''# Выполнено в SourceCraft CI/CD
 - Память: Выделенная CI/CD инфраструктура
 - Сеть: SourceCraft Internal Network
 
-*Этот маркер был автоматически добавлен системой непрерывной интеграции SourceCraft.*
+*Этот маркер был автоматически доба��лен системой непрерывной интеграции SourceCraft.*
 '''
 
-                  # Add as a new markdown cell at the beginning
-                  new_cell = nbf.v4.new_markdown_cell(marker_text)
-                  nb.cells.insert(0, new_cell)
+# Add as a new markdown cell at the beginning
+new_cell = nbf.v4.new_markdown_cell(marker_text)
+nb.cells.insert(0, new_cell)
+
+# Save the notebook
+with open('2_semestr/lr_9/лаба_9.ipynb', 'w') as f:
+    nbf.write(nb, f)
+
+print('Notebook успешно обработан и помечен маркером выполнения SourceCraft CI/CD')
+EOF
                   
-                  # Save the notebook
-                  with open('2_semestr/lr_9/лаба_9.ipynb', 'w') as f:
-                    nbf.write(nb, f)
-                  
-                  print('Notebook успешно обработан и помечен маркером выполнения SourceCraft CI/CD')
+                  # Execute the Python script
+                  python /tmp/process_notebook.py
                   echo "Creating processed notebook artifact..."
                   
                 else
