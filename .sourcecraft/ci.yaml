@@ -31,7 +31,7 @@ workflows:
                 if [ -f "2_semestr/lr_9/лаба_9.ipynb" ]; then
                   echo "Notebook found at: 2_semestr/lr_9/лаба_9.ipynb"
                   
-                  # Create Python script file with proper indentation
+                  # Create Python script file
                   cat > /tmp/process_notebook.py << 'EOF'
 import nbformat as nbf
 import os
@@ -49,16 +49,15 @@ commit_sha_short = commit_sha[:8] if commit_sha != 'N/A' else 'N/A'
 hostname = socket.gethostname()
 timestamp = datetime.utcnow().isoformat()
 
-# Create detailed marker text
-marker_text = f'''# Выполнено в SourceCraft CI/CD
+# Create marker text
+marker_text = '''# Выполнено в SourceCraft CI/CD
 
 ## Информация о выполнении:
 - **Платформа:** SourceCraft CI/CD Runner
-- **Идентификатор запуска:** {run_id}
-- **Коммит:** {commit_sha_short}
-- **Хост раннера:** {hostname}
-- **Время выполнения:** {timestamp} UTC
-
+- **Идентификатор запуска:''' + str(run_id) + '''
+- **Коммит:''' + str(commit_sha_short) + '''
+- **Хост раннера:''' + str(hostname) + '''
+- **Время выполнения:''' + str(timestamp) + ''' UTC
 
 ## Технические детали:
 - Использован Docker образ: python:3.11-alpine
@@ -66,8 +65,7 @@ marker_text = f'''# Выполнено в SourceCraft CI/CD
 - Память: Выделенная CI/CD инфраструктура
 - Сеть: SourceCraft Internal Network
 
-*Этот маркер был автоматически добавлен системой непрерывной интеграции SourceCraft.*
-'''
+*Этот маркер был автоматически добавлен системой непрерывной интеграции SourceCraft.*'''
 
 # Add as a new markdown cell at the beginning
 new_cell = nbf.v4.new_markdown_cell(marker_text)
