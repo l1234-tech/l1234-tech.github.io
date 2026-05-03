@@ -9,13 +9,6 @@ workflows:
     tasks:
       - name: execute-notebook-task
         cubes:
-          - name: checkout-repo
-            image: alpine/git:latest
-            script:
-              - git clone https://${{ secrets.GIT_TOKEN }}@sourcecraft.dev/python-itmo/l1234-tech-github-io.git /workspace
-              - cd /workspace
-              - git checkout ${{ env.SOURCECRAFT_COMMIT_SHA }}
-
           - name: setup-python-dependencies
             image: python:3.11-alpine
             script:
@@ -25,7 +18,6 @@ workflows:
             image: python:3.11-alpine
             script:
               - |
-                cd /workspace
                 python -c "
                 import nbformat as nbf
                 import os
@@ -59,25 +51,9 @@ workflows:
             image: python:3.11-alpine
             script:
               - |
-                cd /workspace
                 pip install mkdocs
                 if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
                 cd ./src
                 mkdocs build -d ../docs
                 echo "Сайт собран в папке ./docs"
                 ls -la ../docs
-
-          # Для публикации в ветку release потребуется настройка Git с токеном
-          # - name: publish-to-release-branch
-          #   image: alpine/git:latest
-          #   env:
-          #     GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
-          #   script:
-          #     - |
-          #       cd /workspace
-          #       git config user.name "sourcecraft-ci"
-          #       git config user.email "ci@sourcecraft.dev"
-          #       git checkout -b release || git checkout release
-          #       git add ./docs
-          #       git commit -m "feat: автоматическое обновление сайта" || echo "No changes to commit"
-          #       git push https://$GIT_TOKEN@sourcecraft.dev/python-itmo/l1234-tech-github-io.git release --force
