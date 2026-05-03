@@ -17,9 +17,18 @@ workflows:
                 pip install nbformat pandas matplotlib
                 echo "Dependencies installed successfully"
                 
+                echo "Checking repository structure..."
+                echo "Current directory: $(pwd)"
+                echo "Directory contents:"
+                ls -la
+                echo "2_semestr contents:"
+                ls -la 2_semestr/
+                echo "2_semestr/lr_9 contents:"
+                ls -la 2_semestr/lr_9/
+                
                 echo "Checking if notebook file exists..."
-                if [ -f "2_semestr/lr_9/data/лаба_9.ipynb" ]; then
-                  echo "Notebook found at: 2_semestr/lr_9/data/лаба_9.ipynb"
+                if [ -f "2_semestr/lr_9/лаба_9.ipynb" ]; then
+                  echo "Notebook found at: 2_semestr/lr_9/лаба_9.ipynb"
                   
                   python -c "
                   import nbformat as nbf
@@ -27,7 +36,7 @@ workflows:
                   from datetime import datetime
 
                   # Load the notebook
-                  with open('2_semestr/lr_9/data/лаба_9.ipynb', 'r') as f:
+                  with open('2_semestr/lr_9/лаба_9.ipynb', 'r') as f:
                       nb = nbf.read(f, as_version=4)
 
                   # Create marker text with CI identifiers
@@ -42,18 +51,15 @@ workflows:
                   nb.cells.append(new_cell)
 
                   # Save the notebook
-                  with open('2_semestr/lr_9/data/лаба_9.ipynb', 'w') as f:
+                  with open('2_semestr/lr_9/лаба_9.ipynb', 'w') as f:
                       nbf.write(nb, f)
                   
                   print('Notebook executed and marked successfully')
                   "
                 else
-                  echo "ERROR: Notebook file not found at: 2_semestr/lr_9/data/лаба_9.ipynb"
-                  echo "Current directory: $(pwd)"
-                  echo "Directory contents:"
-                  ls -la
-                  echo "Looking for notebook..."
-                  find . -name "*.ipynb" -type f 2>/dev/null || echo "No .ipynb files found"
+                  echo "ERROR: Notebook file not found at: 2_semestr/lr_9/лаба_9.ipynb"
+                  echo "Looking for notebook files..."
+                  find . -name "*.ipynb" -type f 2>/dev/null | head -20
                   exit 1
                 fi
 
@@ -64,6 +70,11 @@ workflows:
             image: python:3.11-alpine
             script:
               - |
+                echo "Checking repository structure..."
+                echo "Current directory: $(pwd)"
+                echo "Directory contents:"
+                ls -la
+                
                 echo "Installing MkDocs..."
                 pip install mkdocs
                 if [ -f requirements.txt ]; then 
@@ -73,14 +84,16 @@ workflows:
                 
                 echo "Building MkDocs site..."
                 if [ -d "./src" ]; then
+                  echo "src directory found, checking contents..."
+                  ls -la ./src/
                   cd ./src
                   mkdocs build -d ../docs
                   echo "Сайт собран в папке ./docs"
-                  ls -la ../docs
+                  echo "Docs directory contents:"
+                  ls -la ../docs/
                 else
                   echo "ERROR: src directory not found!"
-                  echo "Current directory: $(pwd)"
-                  echo "Directory contents:"
-                  ls -la
+                  echo "Looking for mkdocs.yml files..."
+                  find . -name "mkdocs.yml" -type f 2>/dev/null
                   exit 1
                 fi
