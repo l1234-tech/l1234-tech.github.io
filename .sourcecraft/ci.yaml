@@ -89,7 +89,6 @@ workflows:
                   echo "Looking for notebook files..."
                   find . -name "*.ipynb" -type f 2>/dev/null | head -20
                   exit 1
-                fi
 
           - name: save-notebook-artifact
             script:
@@ -119,7 +118,6 @@ workflows:
                 else
                   echo "ERROR: Processed notebook not found!"
                   exit 1
-                fi
 
             artifacts:
               paths:
@@ -144,7 +142,6 @@ workflows:
                 if [ -f requirements.txt ]; then 
                   echo "Installing requirements from requirements.txt..."
                   pip install -r requirements.txt
-                fi
                 
                 echo "Building MkDocs site..."
                 if [ -d "./src" ]; then
@@ -165,7 +162,6 @@ workflows:
                   echo "Looking for mkdocs.yml files..."
                   find . -name "mkdocs.yml" -type f 2>/dev/null
                   exit 1
-                fi
 
           - name: save-site-artifact
             script:
@@ -229,7 +225,7 @@ workflows:
                 else
                   echo "ERROR: Site build directory not found!"
                   exit 1
-                fi
+                
 
             artifacts:
               paths:
