@@ -44,6 +44,10 @@ hide:
 -   :eight: **[Лабораторная работа №8](https://colab.research.google.com/drive/1Xvfv46MszGeBwIGkxwh7QqP2ylcesKdX?usp=sharing)**  
     *Тема работы*: Анализ текста
     :material-check-circle: Выполнена! · :material-calendar: 09.05.2026
+
+-   :nine: **[Лабораторная работа №9](lab9.md)**  
+    *Тема работы*: Работа с графикой. Sourcecraft. CI/CD. Артефакты  
+    :material-check-circle: Выполнена! · :material-calendar: 09.05.2026
 </div>
 
 ## 🔍 Как пользоваться отчётами

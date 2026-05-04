@@ -2,45 +2,96 @@ on:
   push:
     workflows: [full-pipeline]
     filter:
-      branches: [main]    # ← триггер только main, чтобы пуш в release не перезапускал CI
+      branches: [main]
 
 workflows:
   full-pipeline:
     tasks:
-      # === ЗАДАЧА 1: ВЫПОЛНИТЬ НОУТБУК И СОЗДАТЬ ОТЧЁТ ===
-      - name: execute-notebook-and-report
+      # === ЗАДАЧА 1: ВЫПОЛНИТЬ НОУТБУК + ДОБАВИТЬ CI-МАРКЕР ===
+      - name: execute-notebook
         cubes:
-          - name: execute-and-generate-report
+          - name: execute-and-mark
             image: docker.io/library/python:3.13-slim
             script:
               - python -m pip install --upgrade pip
               - pip install jupyter nbconvert pandas matplotlib nbformat
+              
               - echo "=== Выполняю ноутбук ==="
               - jupyter nbconvert --to notebook --execute --inplace 2_semestr/lr_9/лаба_9.ipynb
-              - echo "=== Добавляю маркер CI ==="
+              
+              - echo "=== Добавляю CI-маркер в последнюю ячейку ==="
               - |
                 python -c "
                 import nbformat as nbf
+                import os
                 from datetime import datetime, timezone
+
                 with open('2_semestr/lr_9/лаба_9.ipynb', 'r') as f:
                     nb = nbf.read(f, as_version=4)
-                marker_text = f'''# Выполнено в SourceCraft CI
-                - Время: {datetime.now(timezone.utc).isoformat()}
-                - Ноутбук успешно выполнен в облачной среде
-                - Все ячейки проверены на ошибки'''
+
+                # Идентификаторы SourceCraft CI
+                run_id = os.getenv('SOURCE_CRAFT_RUN_ID', 'недоступен')
+                runner_name = os.getenv('SOURCE_CRAFT_RUNNER', 'SourceCraft Runner')
+                commit_sha = os.getenv('SOURCE_CRAFT_COMMIT_SHA', 'недоступен')
+                workflow_name = os.getenv('SOURCE_CRAFT_WORKFLOW', 'full-pipeline')
+                
+                marker_text = f'''# ✅ Выполнено в SourceCraft CI
+                
+                **Этот ноутбук выполнен автоматически в CI-раннере, а не локально и не в Google Colaboratory.**
+                
+                ## Идентификаторы выполнения:
+                - **Workflow:** {workflow_name}
+                - **Run ID:** {run_id}
+                - **Runner:** {runner_name}
+                - **Commit SHA:** {commit_sha}
+                - **Время выполнения:** {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}
+                - **Среда:** SourceCraft CI (облачный раннер)
+                
+                ---
+                *Этот маркер добавлен автоматически. Если вы видите его в Google Colab или локально — ноутбук был до этого выполнен в CI.*
+                '''
+
+                # Добавляем как последнюю ячейку
                 new_cell = nbf.v4.new_markdown_cell(marker_text)
                 nb.cells.append(new_cell)
+
                 with open('2_semestr/lr_9/лаба_9.ipynb', 'w') as f:
                     nbf.write(nb, f)
                 "
-              - echo "=== Генерирую отчёт Markdown в src/docs/labs/laba9.md ==="
-              - mkdir -p src/docs/labs
-              - jupyter nbconvert --to markdown 2_semestr/lr_9/лаба_9.ipynb --output-dir src/docs/labs --output laba9.md
-              - echo "Отчёт создан"
+              - echo "=== CI-маркер добавлен ==="
+          
+          # Сохраняем выполненный ноутбук в ветку artifacts (без триггера CI)
+          - name: save-artifact
+            script:
+              - |
+                git config user.name "sourcecraft-ci[bot]"
+                git config user.email "ci@sourcecraft.dev"
+                
+                # Создаём или обновляем ветку artifacts
+                git fetch origin artifacts || true
+                git checkout -B artifacts origin/artifacts || git checkout --orphan artifacts
+                
+                # Сохраняем ноутбук с датой и как latest
+                mkdir -p executed_notebooks
+                TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+                cp 2_semestr/lr_9/лаба_9.ipynb "executed_notebooks/лаба_9_${TIMESTAMP}.ipynb"
+                cp 2_semestr/lr_9/лаба_9.ipynb executed_notebooks/лаба_9_latest.ipynb
+                
+                # Коммитим только в artifacts (не триггерит CI)
+                git add executed_notebooks/
+                git commit -m "Выполненный ноутбук — ${TIMESTAMP}" || echo "No changes"
+                git push origin artifacts -f
+                echo "=== Артефакт сохранён в ветку artifacts ==="
 
-      # === ЗАДАЧА 2: СОБРАТЬ САЙТ ИЗ ГОТОВОГО ОТЧЁТА ===
+      # === ЗАДАЧА 2: СОБРАТЬ САЙТ ===
       - name: build-and-publish-site
         cubes:
+          - name: copy-notebook-to-docs
+            script:
+              - mkdir -p ./src/docs/notebooks
+              - cp 2_semestr/lr_9/лаба_9.ipynb ./src/docs/notebooks/
+              - echo "Ноутбук скопирован в документацию"
+          
           - name: build-mkdocs-docs
             image: docker.io/library/python:3.13-slim
             script:
