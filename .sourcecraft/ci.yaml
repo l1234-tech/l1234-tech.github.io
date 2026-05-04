@@ -43,6 +43,7 @@ workflows:
               - |
                 git config user.name "sourcecraft-ci[bot]"
                 git config user.email "ci@sourcecraft.dev"
+                git checkout main || git checkout -b main
                 git add 2_semestr/lr_9/лаба_9.ipynb
                 git commit -m "feat: ноутбук выполнен и проверен" || echo "No changes to commit"
                 git push origin main
