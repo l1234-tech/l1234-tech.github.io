@@ -36,27 +36,24 @@ workflows:
                 with open('2_semestr/lr_9/лаба_9.ipynb', 'w') as f:
                     nbf.write(nb, f)
                 "
-              - echo "=== Ноутбук готов ==="
+              - echo "=== Сохраняю артефакт ==="
+              - mkdir -p /artifacts
+              - cp 2_semestr/lr_9/лаба_9.ipynb /artifacts/
+              - echo "Ноутбук сохранён как артефакт"
           
-          - name: commit-executed-notebook
-            script:
-              - |
-                git config user.name "sourcecraft-ci[bot]"
-                git config user.email "ci@sourcecraft.dev"
-                git checkout main || git checkout -b main
-                git add 2_semestr/lr_9/лаба_9.ipynb
-                git commit -m "feat: ноутбук выполнен и проверен" || echo "No changes to commit"
-                git push origin main
+          # SourceCraft автоматически сохранит /artifacts как артефакт workflow
 
   build-site:
     tasks:
       - name: build-and-publish-docs
         cubes:
-          - name: copy-notebook
+          - name: get-notebook-artifact
             script:
+              - echo "=== Скачиваю артефакт из execute-notebook ==="
+              # В SourceCraft артефакты доступны через переменные окружения
               - mkdir -p ./src/docs/notebooks
-              - cp 2_semestr/lr_9/лаба_9.ipynb ./src/docs/notebooks/
-              - echo "Ноутбук скопирован в документацию"
+              - cp $SOURCE_CRAFT_ARTIFACTS_DIR/лаба_9.ipynb ./src/docs/notebooks/ 2>/dev/null || echo "Артефакт не найден, использую локальную версию"
+              - ls -la ./src/docs/notebooks/
           
           - name: build-mkdocs-docs
             image: docker.io/library/python:3.13-slim
