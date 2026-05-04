@@ -2,15 +2,15 @@ on:
   push:
     workflows: [full-pipeline]
     filter:
-      branches: [main, release]
+      branches: [main]    # ← триггер только main, чтобы пуш в release не перезапускал CI
 
 workflows:
   full-pipeline:
     tasks:
-      # === ЗАДАЧА 1: ВЫПОЛНИТЬ НОУТБУК ===
-      - name: execute-notebook
+      # === ЗАДАЧА 1: ВЫПОЛНИТЬ НОУТБУК И СОЗДАТЬ ОТЧЁТ ===
+      - name: execute-notebook-and-report
         cubes:
-          - name: setup-and-execute
+          - name: execute-and-generate-report
             image: docker.io/library/python:3.13-slim
             script:
               - python -m pip install --upgrade pip
@@ -22,53 +22,25 @@ workflows:
                 python -c "
                 import nbformat as nbf
                 from datetime import datetime, timezone
-
                 with open('2_semestr/lr_9/лаба_9.ipynb', 'r') as f:
                     nb = nbf.read(f, as_version=4)
-
                 marker_text = f'''# Выполнено в SourceCraft CI
                 - Время: {datetime.now(timezone.utc).isoformat()}
                 - Ноутбук успешно выполнен в облачной среде
                 - Все ячейки проверены на ошибки'''
-
                 new_cell = nbf.v4.new_markdown_cell(marker_text)
                 nb.cells.append(new_cell)
-
                 with open('2_semestr/lr_9/лаба_9.ipynb', 'w') as f:
                     nbf.write(nb, f)
                 "
-              - echo "=== Ноутбук готов ==="
-          
-          - name: save-to-artifacts-branch
-            script:
-              - |
-                git config user.name "sourcecraft-ci[bot]"
-                git config user.email "ci@sourcecraft.dev"
-                
-                git fetch origin artifacts || true
-                git checkout -B artifacts origin/artifacts || git checkout --orphan artifacts
-                
-                mkdir -p executed_notebooks
-                cp 2_semestr/lr_9/лаба_9.ipynb executed_notebooks/лаба_9_$(date +%Y%m%d_%H%M%S).ipynb
-                cp 2_semestr/lr_9/лаба_9.ipynb executed_notebooks/лаба_9_latest.ipynb
-                
-                git add executed_notebooks/
-                git commit -m "executed notebook — $(date +%Y-%m-%d_%H:%M:%S)" || echo "No changes"
-                git push origin artifacts -f
-                echo "=== Ноутбук сохранён в ветку artifacts ==="
+              - echo "=== Генерирую отчёт Markdown в src/docs/labs/laba9.md ==="
+              - mkdir -p src/docs/labs
+              - jupyter nbconvert --to markdown 2_semestr/lr_9/лаба_9.ipynb --output-dir src/docs/labs --output laba9.md
+              - echo "Отчёт создан"
 
-      # === ЗАДАЧА 2: СОБРАТЬ САЙТ (ждёт завершения задачи 1) ===
+      # === ЗАДАЧА 2: СОБРАТЬ САЙТ ИЗ ГОТОВОГО ОТЧЁТА ===
       - name: build-and-publish-site
         cubes:
-          - name: get-executed-notebook
-            script:
-              - echo "=== Забираю выполненный ноутбук из ветки artifacts ==="
-              - git fetch origin artifacts
-              - git checkout origin/artifacts -- executed_notebooks/лаба_9_latest.ipynb
-              - mkdir -p ./src/docs/notebooks
-              - cp executed_notebooks/лаба_9_latest.ipynb ./src/docs/notebooks/лаба_9.ipynb
-              - echo "Ноутбук скопирован в документацию"
-          
           - name: build-mkdocs-docs
             image: docker.io/library/python:3.13-slim
             script:
@@ -77,7 +49,6 @@ workflows:
               - pip install mkdocs mkdocs-jupyter
               - cd ./src && mkdocs build -d ../docs
               - echo "Сайт собран в папке ./docs"
-              - ls -la ./docs
           
           - name: publish-to-release-branch
             script:
@@ -87,5 +58,5 @@ workflows:
                 git fetch origin release || true
                 git checkout -B release origin/release || git checkout -b release
                 git add ./docs
-                git commit -m "feat: автоматическое обновление сайта" || echo "No changes to commit"
+                git commit -m "feat: автоматическое обновление сайта" || echo "No changes"
                 git push origin release -f
