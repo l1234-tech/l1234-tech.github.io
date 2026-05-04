@@ -1,23 +1,20 @@
 on:
   push:
-    workflows: build-site
+    workflows: execute-notebook
     filter:
-      branches: [main, release]
+      branches: [main]
 
 workflows:
-  build-site:
+  execute-notebook:
     tasks:
-      - name: execute-notebook
+      - name: run-notebook
         cubes:
-          - name: setup-python
+          - name: setup-and-execute
             image: docker.io/library/python:3.13-slim
             script:
               - python -m pip install --upgrade pip
               - pip install jupyter nbconvert
-          
-          - name: run-notebook
-            script:
-              - jupyter nbconvert --to notebook --execute --inplace 2_semestr/lr_9/data/лаба_9.ipynb
+              - jupyter nbconvert --to notebook --execute --inplace 2_semestr/lr_9/лаба_9.ipynb
               - echo "Ноутбук выполнен успешно"
           
           - name: add-ci-marker
@@ -25,10 +22,9 @@ workflows:
               - |
                 python -c "
                 import nbformat as nbf
-                import os
                 from datetime import datetime, timezone
 
-                with open('2_semestr/lr_9/data/лаба_9.ipynb', 'r') as f:
+                with open('2_semestr/lr_9/лаба_9.ipynb', 'r') as f:
                     nb = nbf.read(f, as_version=4)
 
                 marker_text = f'''# Выполнено в SourceCraft CI
@@ -39,29 +35,48 @@ workflows:
                 new_cell = nbf.v4.new_markdown_cell(marker_text)
                 nb.cells.append(new_cell)
 
-                with open('2_semestr/lr_9/data/лаба_9.ipynb', 'w') as f:
+                with open('2_semestr/lr_9/лаба_9.ipynb', 'w') as f:
                     nbf.write(nb, f)
                 "
               - echo "Маркер CI добавлен в ноутбук"
+          
+          - name: commit-executed-notebook
+            script:
+              - |
+                git config user.name "sourcecraft-ci[bot]"
+                git config user.email "ci@sourcecraft.dev"
+                git add 2_semestr/lr_9/лаба_9.ipynb
+                git commit -m "feat: ноутбук выполнен и проверен" || echo "No changes to commit"
+                git push origin main
 
-      - name: build-and-publish-site
+
+on:
+  push:
+    workflows: build-site
+    filter:
+      branches: [main, release]
+
+workflows:
+  build-site:
+    tasks:
+      - name: build-and-publish-docs
         cubes:
-          - name: copy-notebook-to-docs
+          - name: copy-notebook
             script:
               - mkdir -p ./src/docs/notebooks
-              - cp 2_semestr/lr_9/data/лаба_9.ipynb ./src/docs/notebooks/
+              - cp 2_semestr/lr_9/лаба_9.ipynb ./src/docs/notebooks/
               - echo "Ноутбук скопирован в документацию"
           
-          - name: build-mkdocs-site
+          - name: build-mkdocs-docs
             image: docker.io/library/python:3.13-slim
             script:
               - python -m pip install --upgrade pip
               - "if [ -f requirements.txt ]; then pip install -r requirements.txt; fi"
-              - pip install mkdocs
+              - pip install mkdocs mkdocs-jupyter
               - cd ./src && mkdocs build -d ../docs
-              - echo "Сайт собран в папке ../docs"
-              - ls -la ../docs
-
+              - echo "Сайт собран в папке ./docs"
+              - ls -la ./docs
+          
           - name: publish-to-release-branch
             script:
               - |
@@ -70,6 +85,5 @@ workflows:
                 git fetch origin release || true
                 git checkout -B release origin/release || git checkout -b release
                 git add ./docs
-                git add 2_semestr/lr_9/data/лаба_9.ipynb
-                git commit -m "feat: автоматическое обновление сайта и выполнение ноутбука" || echo "No changes to commit"
+                git commit -m "feat: автоматическое обновление сайта" || echo "No changes to commit"
                 git push origin release -f
