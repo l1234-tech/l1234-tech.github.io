@@ -2,7 +2,7 @@ on:
   push:
     workflows: [execute-notebook, build-site]
     filter:
-      branches: [main,release]
+      branches: [main, release]
 
 workflows:
   execute-notebook:
@@ -49,7 +49,6 @@ workflows:
                 git commit -m "feat: ноутбук выполнен и проверен" || echo "No changes to commit"
                 git push origin main
 
-workflows:
   build-site:
     tasks:
       - name: build-and-publish-docs
