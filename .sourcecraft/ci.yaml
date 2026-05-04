@@ -9,16 +9,14 @@ workflows:
     tasks:
       - name: run-notebook
         cubes:
-          - name: setup-and-execute
+          - name: execute-and-mark
             image: docker.io/library/python:3.13-slim
             script:
               - python -m pip install --upgrade pip
-              - pip install jupyter nbconvert pandas matplotlib
+              - pip install jupyter nbconvert pandas matplotlib nbformat
+              - echo "=== Выполняю ноутбук ==="
               - jupyter nbconvert --to notebook --execute --inplace 2_semestr/lr_9/лаба_9.ipynb
-              - echo "Ноутбук выполнен успешно"
-          
-          - name: add-ci-marker
-            script:
+              - echo "=== Добавляю маркер CI ==="
               - |
                 python -c "
                 import nbformat as nbf
@@ -38,7 +36,7 @@ workflows:
                 with open('2_semestr/lr_9/лаба_9.ipynb', 'w') as f:
                     nbf.write(nb, f)
                 "
-              - echo "Маркер CI добавлен в ноутбук"
+              - echo "=== Ноутбук готов ==="
           
           - name: commit-executed-notebook
             script:
