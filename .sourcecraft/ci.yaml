@@ -1,40 +1,73 @@
-jobs:
-  execute-notebook:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with: { python-version: '3.11' }
-      - run: pip install jupyter nbconvert
-      - name: Execute notebook
-        run: |
-          jupyter nbconvert --to notebook --execute --inplace \
-            2_semestr/lr_9/data/лаба_9.ipynb
-      - uses: actions/upload-artifact@v3
-        with:
-          name: executed-notebook
-          path: 2_semestr/lr_9/data/лаба_9.ipynb
+on:
+  push:
+    branches: main
 
-  build-and-publish-docs:
-    needs: execute-notebook
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with: { python-version: '3.11' }
-      - uses: actions/download-artifact@v3
-        with:
-          name: executed-notebook
-          path: ./src/docs/notebooks/   # чтобы MkDocs увидел
-      - run: pip install mkdocs
-      - run: |
-          mkdocs build -f ./src/mkdocs.yml -d ../docs
-      - name: Publish to release
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "<>"
-          git fetch origin release || true
-          git checkout -B release origin/release || git checkout -b release
-          git add ./docs
-          git commit -m "feat: обновление сайта" || echo "No changes"
-          git push origin release -f
+workflows:
+  build-site:
+    tasks:
+      - name: execute-notebook
+        cubes:
+          - name: setup-python
+            image: docker.io/library/python:3.13-slim
+            script:
+              - python -m pip install --upgrade pip
+              - pip install jupyter nbconvert
+          
+          - name: run-notebook
+            script:
+              - jupyter nbconvert --to notebook --execute --inplace 2_semestr/lr_9/data/лаба_9.ipynb
+              - echo "Ноутбук выполнен успешно"
+          
+          - name: add-ci-marker
+            script:
+              - |
+                python -c "
+                import nbformat as nbf
+                import os
+                from datetime import datetime, timezone
+
+                with open('2_semestr/lr_9/data/лаба_9.ipynb', 'r') as f:
+                    nb = nbf.read(f, as_version=4)
+
+                marker_text = f'''# Выполнено в SourceCraft CI
+                - Время: {datetime.now(timezone.utc).isoformat()}
+                - Ноутбук успешно выполнен в облачной среде
+                - Все ячейки проверены на ошибки'''
+
+                new_cell = nbf.v4.new_markdown_cell(marker_text)
+                nb.cells.append(new_cell)
+
+                with open('2_semestr/lr_9/data/лаба_9.ipynb', 'w') as f:
+                    nbf.write(nb, f)
+                "
+              - echo "Маркер CI добавлен в ноутбук"
+
+      - name: build-and-publish-site
+        cubes:
+          - name: copy-notebook-to-docs
+            script:
+              - mkdir -p ./src/docs/notebooks
+              - cp 2_semestr/lr_9/data/лаба_9.ipynb ./src/docs/notebooks/
+              - echo "Ноутбук скопирован в документацию"
+          
+          - name: build-mkdocs-site
+            image: docker.io/library/python:3.13-slim
+            script:
+              - python -m pip install --upgrade pip
+              - "if [ -f requirements.txt ]; then pip install -r requirements.txt; fi"
+              - pip install mkdocs
+              - cd ./src && mkdocs build -d ../docs
+              - echo "Сайт собран в папке ../docs"
+              - ls -la ../docs
+
+          - name: publish-to-release-branch
+            script:
+              - |
+                git config user.name "sourcecraft-ci[bot]"
+                git config user.email "ci@sourcecraft.dev"
+                git fetch origin release || true
+                git checkout -B release origin/release || git checkout -b release
+                git add ./docs
+                git add 2_semestr/lr_9/data/лаба_9.ipynb
+                git commit -m "feat: автоматическое обновление сайта и выполнение ноутбука" || echo "No changes to commit"
+                git push origin release -f
