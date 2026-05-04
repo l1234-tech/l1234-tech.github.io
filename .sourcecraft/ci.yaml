@@ -1,8 +1,8 @@
 on:
   push:
-    workflows: execute-notebook
+    workflows: [execute-notebook, build-site]
     filter:
-      branches: [main]
+      branches: [main,release]
 
 workflows:
   execute-notebook:
@@ -48,13 +48,6 @@ workflows:
                 git add 2_semestr/lr_9/лаба_9.ipynb
                 git commit -m "feat: ноутбук выполнен и проверен" || echo "No changes to commit"
                 git push origin main
-
-
-on:
-  push:
-    workflows: build-site
-    filter:
-      branches: [main, release]
 
 workflows:
   build-site:
