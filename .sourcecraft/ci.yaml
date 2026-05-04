@@ -1,15 +1,16 @@
 on:
   push:
-    workflows: [execute-notebook, build-site]
+    workflows: [full-pipeline]
     filter:
       branches: [main, release]
 
 workflows:
-  execute-notebook:
+  full-pipeline:
     tasks:
-      - name: run-notebook
+      # === ЗАДАЧА 1: ВЫПОЛНИТЬ НОУТБУК ===
+      - name: execute-notebook
         cubes:
-          - name: execute-and-mark
+          - name: setup-and-execute
             image: docker.io/library/python:3.13-slim
             script:
               - python -m pip install --upgrade pip
@@ -44,23 +45,20 @@ workflows:
                 git config user.name "sourcecraft-ci[bot]"
                 git config user.email "ci@sourcecraft.dev"
                 
-                # Создать ИЛИ переключиться на ветку artifacts
                 git fetch origin artifacts || true
                 git checkout -B artifacts origin/artifacts || git checkout --orphan artifacts
                 
-                # Скопировать выполненный ноутбук
                 mkdir -p executed_notebooks
                 cp 2_semestr/lr_9/лаба_9.ipynb executed_notebooks/лаба_9_$(date +%Y%m%d_%H%M%S).ipynb
                 cp 2_semestr/lr_9/лаба_9.ipynb executed_notebooks/лаба_9_latest.ipynb
                 
-                # Закоммитить в ветку artifacts (CI не сработает, так как нет триггера на artifacts)
                 git add executed_notebooks/
                 git commit -m "executed notebook — $(date +%Y-%m-%d_%H:%M:%S)" || echo "No changes"
                 git push origin artifacts -f
+                echo "=== Ноутбук сохранён в ветку artifacts ==="
 
-  build-site:
-    tasks:
-      - name: build-and-publish-docs
+      # === ЗАДАЧА 2: СОБРАТЬ САЙТ (ждёт завершения задачи 1) ===
+      - name: build-and-publish-site
         cubes:
           - name: get-executed-notebook
             script:
