@@ -36,24 +36,40 @@ workflows:
                 with open('2_semestr/lr_9/лаба_9.ipynb', 'w') as f:
                     nbf.write(nb, f)
                 "
-              - echo "=== Сохраняю артефакт ==="
-              - mkdir -p /artifacts
-              - cp 2_semestr/lr_9/лаба_9.ipynb /artifacts/
-              - echo "Ноутбук сохранён как артефакт"
+              - echo "=== Ноутбук готов ==="
           
-          # SourceCraft автоматически сохранит /artifacts как артефакт workflow
+          - name: save-to-artifacts-branch
+            script:
+              - |
+                git config user.name "sourcecraft-ci[bot]"
+                git config user.email "ci@sourcecraft.dev"
+                
+                # Создать ИЛИ переключиться на ветку artifacts
+                git fetch origin artifacts || true
+                git checkout -B artifacts origin/artifacts || git checkout --orphan artifacts
+                
+                # Скопировать выполненный ноутбук
+                mkdir -p executed_notebooks
+                cp 2_semestr/lr_9/лаба_9.ipynb executed_notebooks/лаба_9_$(date +%Y%m%d_%H%M%S).ipynb
+                cp 2_semestr/lr_9/лаба_9.ipynb executed_notebooks/лаба_9_latest.ipynb
+                
+                # Закоммитить в ветку artifacts (CI не сработает, так как нет триггера на artifacts)
+                git add executed_notebooks/
+                git commit -m "executed notebook — $(date +%Y-%m-%d_%H:%M:%S)" || echo "No changes"
+                git push origin artifacts -f
 
   build-site:
     tasks:
       - name: build-and-publish-docs
         cubes:
-          - name: get-notebook-artifact
+          - name: get-executed-notebook
             script:
-              - echo "=== Скачиваю артефакт из execute-notebook ==="
-              # В SourceCraft артефакты доступны через переменные окружения
+              - echo "=== Забираю выполненный ноутбук из ветки artifacts ==="
+              - git fetch origin artifacts
+              - git checkout origin/artifacts -- executed_notebooks/лаба_9_latest.ipynb
               - mkdir -p ./src/docs/notebooks
-              - cp $SOURCE_CRAFT_ARTIFACTS_DIR/лаба_9.ipynb ./src/docs/notebooks/ 2>/dev/null || echo "Артефакт не найден, использую локальную версию"
-              - ls -la ./src/docs/notebooks/
+              - cp executed_notebooks/лаба_9_latest.ipynb ./src/docs/notebooks/лаба_9.ipynb
+              - echo "Ноутбук скопирован в документацию"
           
           - name: build-mkdocs-docs
             image: docker.io/library/python:3.13-slim
