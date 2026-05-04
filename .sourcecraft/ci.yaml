@@ -7,7 +7,6 @@ on:
 workflows:
   full-pipeline:
     tasks:
-      # === ЗАДАЧА 1: ВЫПОЛНИТЬ НОУТБУК + ДОБАВИТЬ CI-МАРКЕР ===
       - name: execute-notebook
         cubes:
           - name: execute-and-mark
@@ -15,11 +14,9 @@ workflows:
             script:
               - python -m pip install --upgrade pip
               - pip install jupyter nbconvert pandas matplotlib nbformat
-              
               - echo "=== Выполняю ноутбук ==="
               - jupyter nbconvert --to notebook --execute --inplace 2_semestr/lr_9/лаба_9.ipynb
-              
-              - echo "=== Добавляю CI-маркер в последнюю ячейку ==="
+              - echo "=== Добавляю CI-маркер ==="
               - |
                 python -c "
                 import nbformat as nbf
@@ -29,7 +26,6 @@ workflows:
                 with open('2_semestr/lr_9/лаба_9.ipynb', 'r') as f:
                     nb = nbf.read(f, as_version=4)
 
-                # Идентификаторы SourceCraft CI
                 run_id = os.getenv('SOURCE_CRAFT_RUN_ID', 'недоступен')
                 runner_name = os.getenv('SOURCE_CRAFT_RUNNER', 'SourceCraft Runner')
                 commit_sha = os.getenv('SOURCE_CRAFT_COMMIT_SHA', 'недоступен')
@@ -51,7 +47,6 @@ workflows:
                 *Этот маркер добавлен автоматически. Если вы видите его в Google Colab или локально — ноутбук был до этого выполнен в CI.*
                 '''
 
-                # Добавляем как последнюю ячейку
                 new_cell = nbf.v4.new_markdown_cell(marker_text)
                 nb.cells.append(new_cell)
 
@@ -60,30 +55,21 @@ workflows:
                 "
               - echo "=== CI-маркер добавлен ==="
           
-          # Сохраняем выполненный ноутбук в ветку artifacts (без триггера CI)
           - name: save-artifact
             script:
               - |
                 git config user.name "sourcecraft-ci[bot]"
                 git config user.email "ci@sourcecraft.dev"
-                
-                # Создаём или обновляем ветку artifacts
                 git fetch origin artifacts || true
                 git checkout -B artifacts origin/artifacts || git checkout --orphan artifacts
-                
-                # Сохраняем ноутбук с датой и как latest
+                rm -rf executed_notebooks/лаба_9*
                 mkdir -p executed_notebooks
-                TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-                cp 2_semestr/lr_9/лаба_9.ipynb "executed_notebooks/лаба_9_${TIMESTAMP}.ipynb"
-                cp 2_semestr/lr_9/лаба_9.ipynb executed_notebooks/лаба_9_latest.ipynb
-                
-                # Коммитим только в artifacts (не триггерит CI)
+                cp 2_semestr/lr_9/лаба_9.ipynb executed_notebooks/лаба_9.ipynb
                 git add executed_notebooks/
-                git commit -m "Выполненный ноутбук — ${TIMESTAMP}" || echo "No changes"
+                git commit -m "✅ Выполненный ноутбук — лаба_9" || echo "No changes"
                 git push origin artifacts -f
-                echo "=== Артефакт сохранён в ветку artifacts ==="
+                echo "=== Артефакт обновлён ==="
 
-      # === ЗАДАЧА 2: СОБРАТЬ САЙТ ===
       - name: build-and-publish-site
         cubes:
           - name: copy-notebook-to-docs
