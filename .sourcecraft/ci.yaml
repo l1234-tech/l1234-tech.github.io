@@ -13,10 +13,7 @@ workflows:
             image: docker.io/library/python:3.13-slim
             script:
               - python -m pip install --upgrade pip
-              # Установить И зависимости ноутбука, И nbconvert
               - pip install jupyter nbconvert pandas matplotlib
-              # Если ноутбук использует что-то ещё — добавить сюда же
-              # Например: - pip install numpy seaborn scipy
               - jupyter nbconvert --to notebook --execute --inplace 2_semestr/lr_9/лаба_9.ipynb
               - echo "Ноутбук выполнен успешно"
           
