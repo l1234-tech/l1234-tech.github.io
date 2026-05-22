@@ -26,20 +26,14 @@ workflows:
                 with open('2_semestr/lr_9/лаба_9.ipynb', 'r') as f:
                     nb = nbf.read(f, as_version=4)
 
-                run_id = os.getenv('SOURCE_CRAFT_RUN_ID', 'недоступен')
                 runner_name = os.getenv('SOURCE_CRAFT_RUNNER', 'SourceCraft Runner')
-                commit_sha = os.getenv('SOURCE_CRAFT_COMMIT_SHA', 'недоступен')
                 workflow_name = os.getenv('SOURCE_CRAFT_WORKFLOW', 'full-pipeline')
                 
-                marker_text = f'''# ✅ Выполнено в SourceCraft CI
-                
-                **Этот ноутбук выполнен автоматически в CI-раннере, а не локально и не в Google Colaboratory.**
+                marker_text = f'''# Выполнено в SourceCraft CI
                 
                 ## Идентификаторы выполнения:
                 - **Workflow:** {workflow_name}
-                - **Run ID:** {run_id}
                 - **Runner:** {runner_name}
-                - **Commit SHA:** {commit_sha}
                 - **Время выполнения:** {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}
                 - **Среда:** SourceCraft CI (облачный раннер)
                 
