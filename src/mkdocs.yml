@@ -1,6 +1,6 @@
 site_name: Портфолио Сырчина Андрея
 site_author: Сырчин Андрей
-site_description: Учебный портал и отчеты по лабораторным работам
+site_description: Портфолио — проекты, хакатоны, достижения и учебная деятельность
 
 docs_dir: docs
 site_dir: docs
@@ -54,12 +54,23 @@ copyright: © 2026 Сырчин Андрей
 
 nav:
   - Главная: index.md
-  - Лабораторные работы:
-    - Главная: labs/index.md
-    - Лаба 1: labs/lab1.md
-    - Лаба 2: labs/lab2.md
-    - Лаба 3: labs/lab3.md
-    - Лаба 9: labs/lab9.md
   - Обо мне: about.md
-  - Материалы:
-    - Главная: materials/index.md
+  - Проекты:
+    - Главная: projects/index.md
+    - ML-сервис: projects/ml-service.md
+    - Перцептрон на C++: projects/perceptron.md
+    - AI-ассистент для онкологии: projects/oncology-assistant.md
+    - Просвещённый абсолютизм Екатерины II: projects/catherine-ii.md
+  - Хакатоны:
+    - Главная: hackathons/index.md
+    - Проектная школа «Авито»: hackathons/avito.md
+    - Хакатон «Цифровое здоровье»: hackathons/digital-health.md
+  - Учебная деятельность:
+    - Лабораторные работы:
+      - Главная: labs/index.md
+      - Лаба 1: labs/lab1.md
+      - Лаба 2: labs/lab2.md
+      - Лаба 3: labs/lab3.md
+      - Лаба 9: labs/lab9.md
+    - Материалы:
+      - Главная: materials/index.md
