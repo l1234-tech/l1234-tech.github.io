@@ -1,61 +1,95 @@
 ---
 title: Обо мне
-description: Информация о Сырчине Андрее — авторе портфолио
+description: Андрей Сырчин — студент ИТМО, разработчик ПО и автор портфолио
 hide:
-  - navigation
+  - toc
 ---
 
-# :bust_in_silhouette: Обо мне
+# Обо мне
 
-![Аватар](assets/images/avatar.png){ align=right width=200 }
+![Аватар](assets/images/avatar.png){ align=right width=220 }
 
-## Сырчин Андрей
+<div class="portfolio-about-lead" markdown>
 
-> :material-school: Студент | :material-code-braces: Разработчик 
+## Андрей Сырчин
 
-Привет! 👋 Я — Андрей. Этот сайт — моё портфолио: здесь я собираю свои проекты, участие в хакатонах и учебные достижения, а также документирую опыт по лабораторным работам.
+**Студент ИТМО · Разработка ПО · Backend · Machine Learning**
 
----
-
-## 🎓 Образование
-
-| Период | Учреждение | Направление | Группа |
-|--------|-----------|-------------|-------|
-| 2025 — н.в. | НИУ ИТМО | Программная инженерия и компьютерные технологии | Р3222 |
-
-## 🏆 Достижения
-
--   **1-й и 2-й семестры** завершены с оценками «отлично»
--   **Практика в проектной школе «Авито»** защищена на «отлично»
--   **Хакатон «Цифровое здоровье»** — сертификат участника (ИТМО × НМИЦ онкологии им. Н.Н. Петрова × Yandex Cloud)
-
-## 💻 Технические навыки
-
-<div class="grid" markdown>
-
-:material-language-python: **Python**  
-`pandas` `numpy` `matplotlib` `pytest` `FastAPI`
-
-:material-language-cpp: **C++**  
-`перцептрон` `нейросети`
-
-:material-language-java: **Java**  
-`ООП`
-
-:material-language-javascript: **JavaScript**  
-`HTML5` `CSS3`
-
-:material-sync: **CI/CD**  
-`SourceCraft` `GitHub Actions`
-
-:material-database: **Data & Tools**  
-`SQL` `Git` `MkDocs`
-
+Привет! Я Андрей — студент ИТМО, интересуюсь разработкой программного обеспечения и машинным обучением. Создаю учебные и командные проекты, экспериментирую с обработкой данных и ML, осваиваю инструменты разработки и автоматизации.
 
 </div>
 
-## 📬 Контакты
+<div class="portfolio-actions" markdown>
+[GitHub](https://github.com/l1234-tech){ .md-button .md-button--primary }
+[Telegram](https://t.me/dark_kurom1){ .md-button }
+[Написать на почту](mailto:syrchin.andrej@inbox.ru){ .md-button }
+</div>
 
-:fontawesome-brands-github: **GitHub**: [@l1234-tech](https://github.com/l1234-tech)  
-:fontawesome-brands-telegram: **Telegram**: [@dark_kurom1](https://t.me/@dark_kurom1)  
-:material-email: **Email**: [syrchin.andrej@inbox.ru](mailto:syrchin.andrej@inbox.ru)
+---
+
+## Образование
+
+| Параметр | Информация |
+|---|---|
+| Учебное заведение | НИУ ИТМО |
+| Направление | Программная инженерия и компьютерные технологии |
+| Период | 2025 — настоящее время |
+| Группа | Р3222 |
+
+## Чем занимаюсь
+
+<div class="grid cards" markdown>
+
+-   :material-code-braces: **Разработка ПО**
+
+    Пишу на Python и C++, изучаю проектирование приложений, структуры данных, тестирование и организацию кода.
+
+-   :material-brain: **Machine Learning**
+
+    Работаю с данными, исследую модели машинного обучения и создаю прототипы ML-сервисов.
+
+-   :material-rocket-launch: **Инженерные инструменты**
+
+    Использую Git, PostgreSQL, pytest и CI/CD, учусь автоматизировать проверки и разработку.
+
+</div>
+
+## Технические навыки
+
+<div class="grid cards" markdown>
+
+-   **Python**
+
+    `pandas` · `NumPy` · `Matplotlib` · `pytest` · `FastAPI`
+
+-   **C++**
+
+    Основы языка, алгоритмы и реализация перцептрона.
+
+-   **Backend и данные**
+
+    `SQL` · `PostgreSQL` · `REST API`
+
+-   **Веб-разработка**
+
+    `HTML` · `CSS` · `JavaScript` · `MkDocs`
+
+-   **Инструменты**
+
+    `Git` · `GitHub Actions` · `SourceCraft` · `CI/CD`
+
+</div>
+
+## Достижения и опыт
+
+-   Первые два семестра в ИТМО завершены с оценками «отлично».
+-   Практический проект в проектной школе «Авито» защищён на «отлично».
+-   Участвовал в хакатоне «Цифровое здоровье»; в команде разрабатывали AI-ассистента для врачей-онкологов и исследователей.
+
+Подробнее: [проекты](projects/index.md) · [хакатоны](hackathons/index.md).
+
+## Контакты
+
+-   **GitHub:** [@l1234-tech](https://github.com/l1234-tech)
+-   **Telegram:** [@dark_kurom1](https://t.me/dark_kurom1)
+-   **Email:** [syrchin.andrej@inbox.ru](mailto:syrchin.andrej@inbox.ru)
