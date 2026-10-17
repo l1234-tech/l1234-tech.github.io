@@ -4,7 +4,7 @@
 
 **Личное портфолио разработчика и учебный архив ИТМО**
 
-[Открыть сайт](https://l1234-tech.github.io/) · [Проекты](https://l1234-tech.github.io/projects/) · [Обо мне](https://l1234-tech.github.io/about/) · [GitHub](https://github.com/l1234-tech)
+[Открыть сайт](https://l1234-tech.github.io/) · [Проекты](https://l1234-tech.github.io/projects/) · [Обо мне](https://l1234-tech.github.io/about/) · [Как работать с репозиторием](CONTRIBUTING.md) · [GitHub](https://github.com/l1234-tech)
 
 ![MkDocs](https://img.shields.io/badge/MkDocs-Material-7c3aed?style=flat-square&logo=materialformkdocs&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=flat-square&logo=python&logoColor=white)
@@ -100,7 +100,7 @@
 
 4. Открой адрес, который появится в терминале (обычно [http://127.0.0.1:8000](http://127.0.0.1:8000)).
 
-Папка `site-preview/` — локальный результат сборки; её не нужно коммитить.
+Папка `site-preview/` — локальный результат сборки; она добавлена в `.gitignore` и не должна попадать в коммиты. В корневой `docs/` находится опубликованный результат сборки, который workflow пересоздаёт при деплое.
 
 ## Как публикуется сайт
 
@@ -114,7 +114,7 @@ Workflow [`.github/workflows/deploy.yaml`](.github/workflows/deploy.yaml) зап
 
 Не редактируй сгенерированные HTML-файлы вместо исходных Markdown-страниц: при следующей сборке они будут созданы заново.
 
-## Контакты
+## Поддержка структуры\n\nПодробные правила редактирования, локальной проверки и безопасной публикации собраны в [CONTRIBUTING.md](CONTRIBUTING.md). Структура сохранена без массового перемещения файлов: это позволяет не ломать пути учебных заданий и существующий процесс GitHub Pages.\n\n## Контакты
 
 - **GitHub:** [@l1234-tech](https://github.com/l1234-tech)
 - **Telegram:** [@dark_kurom1](https://t.me/dark_kurom1)
