@@ -28,6 +28,9 @@ theme:
     - search.highlight
     - content.code.copy
 
+extra_css:
+  - assets/extra.css
+
 markdown_extensions:
   - attr_list
   - md_in_html
@@ -46,7 +49,7 @@ extra:
     - icon: fontawesome/brands/github
       link: https://github.com/l1234-tech
     - icon: fontawesome/brands/telegram
-      link: https://t.me/@dark_kurom1
+      link: https://t.me/dark_kurom1
     - icon: material/email
       link: mailto:syrchin.andrej@inbox.ru
 
