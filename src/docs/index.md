@@ -1,50 +1,102 @@
 ---
 title: Главная
-description: Портфолио Сырчина Андрея — проекты, хакатоны и достижения
+description: Портфолио Сырчина Андрея — backend, машинное обучение, проекты и достижения
 hide:
   - toc
 ---
 
-# 👋 Добро пожаловать!
+<div class="portfolio-hero" markdown>
 
-> Это моё портфолио: проекты, участие в хакатонах и учебные достижения. Здесь я собираю лучшие работы и результаты.
+<span class="portfolio-eyebrow">PORTFOLIO · 2026</span>
 
-## 🚀 Быстрый доступ
+# Андрей Сырчин
 
-<div class="grid cards" markdown>
+## Разработка ПО · Backend · Machine Learning
 
--   :material-folder-multiple: **[Проекты](projects/index.md)**  
-    ML-сервис, нейросеть на C++, AI-ассистент, веб-проекты
+Студент ИТМО. Создаю программные решения — от backend-сервисов и инструментов анализа данных до ML-прототипов и веб-приложений.
 
--   :trophy: **[Хакатоны](hackathons/index.md)**  
-    Проектная школа «Авито» и хакатон «Цифровое здоровье»
-
--   :bust_in_silhouette: **[Обо мне](about.md)**  
-    Образование, навыки и контакты
+<div class="portfolio-actions" markdown>
+[Посмотреть проекты](projects/index.md){ .md-button .md-button--primary }
+[Обо мне](about.md){ .md-button }
+[GitHub](https://github.com/l1234-tech){ .md-button }
+</div>
 
 </div>
 
-## 🏆 Ключевые достижения
+<div class="grid cards" markdown>
 
-| Достижение | Результат |
-|------------|-----------|
-| 1-й и 2-й семестры в ИТМО | ✅ Завершены с оценками «отлично» |
-| Практика в проектной школе «Авито» | ✅ Защищена на «отлично» |
-| ML-сервис с CI/CD (SourceCraft) | ✅ Разработан и настроен |
-| Хакатон «Цифровое здоровье» (ИТМО × НМИЦ онкологии × Yandex Cloud) | 🎖 Сертификат участника |
+-   :material-code-braces: **Разработка**
 
-## 💻 Проекты в одном взгляде
+    Python, C++, FastAPI и инструменты для создания и тестирования приложений.
 
-| Проект | Технологии | Статус |
-|--------|-----------|--------|
-| [ML-сервис](projects/ml-service.md) | Python, FastAPI, CI/CD | ✅ Готов |
-| [Перцептрон](projects/perceptron.md) | C++ | ✅ Готов |
-| [AI-ассистент для онкологов](projects/oncology-assistant.md) | Python, БД, AI | 🧪 Прототип |
-| [Просвещённый абсолютизм Екатерины II](projects/catherine-ii.md) | HTML, CSS, JS | ✅ Готов |
+-   :material-brain: **Machine Learning**
 
-## 💡 Особенности сайта
+    Эксперименты с моделями, обработка данных и создание прототипов интеллектуальных систем.
 
--   :material-moon-waning-crescent: **Тёмная/светлая тема** — переключайте по удобству
--   :material-code-tags: **Подсветка кода** — с копированием в один клик
--   :material-table: **Адаптивные таблицы** — удобно на любом устройстве
--   :material-magnify: **Поиск по сайту** — мгновенный доступ к информации
+-   :material-rocket-launch: **Проекты и практика**
+
+    Учебные разработки, проектная школа «Авито» и командные хакатоны.
+
+</div>
+
+## Избранные проекты
+
+<div class="grid cards" markdown>
+
+-   :material-server: **[ML-сервис](projects/ml-service.md)**
+
+    **Python · FastAPI · CI/CD**
+
+    Backend-сервис для работы с ML-моделями и получения предсказаний.
+
+    [:octicons-arrow-up-right-24: Репозиторий](https://github.com/l1234-tech/ml-service)
+
+-   :material-language-cpp: **[Перцептрон на C++](projects/perceptron.md)**
+
+    **C++ · Machine Learning**
+
+    Реализация простейшей нейросети и базовых принципов классификации.
+
+-   :material-medical-bag: **[AI-ассистент для онкологов](projects/oncology-assistant.md)**
+
+    **Python · AI · Данные**
+
+    Прототип инструмента для поддержки исследовательских задач в медицинской сфере.
+
+-   :material-book-open-page-variant: **[Исторический веб-проект](projects/catherine-ii.md)**
+
+    **HTML · CSS · JavaScript**
+
+    Сайт об эпохе Екатерины II с исследовательским содержанием.
+
+</div>
+
+## Путь и достижения
+
+<div class="grid cards" markdown>
+
+-   **ИТМО**
+
+    Обучение по направлению «Программная инженерия и компьютерные технологии». Первые два семестра завершены на «отлично».
+
+-   **Проектная школа «Авито»**
+
+    Практический проект защищён на «отлично».
+
+-   **«Цифровое здоровье»**
+
+    Участие в хакатоне ИТМО, НМИЦ онкологии им. Н. Н. Петрова и Yandex Cloud. Командный проект — AI-ассистент.
+
+</div>
+
+## Технологический стек
+
+<div class="portfolio-stack" markdown>
+
+`Python` `C++` `SQL` `PostgreSQL` `FastAPI` `pandas` `NumPy` `Matplotlib` `pytest` `Git` `CI/CD` `HTML` `CSS` `JavaScript`
+
+</div>
+
+## Навигация
+
+Нужны подробности? В разделе [«Проекты»](projects/index.md) — описание разработок и технологий, в разделе [«Хакатоны»](hackathons/index.md) — опыт командной работы, а в разделе [«Обо мне»](about.md) — образование, навыки и контакты.
